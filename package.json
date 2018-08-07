@@ -1,0 +1,36 @@
+{
+  "name": "maptalks.geo2img",
+  "version": "0.1.0-alpha.1",
+  "description": "A tool to get base64 data src for html-tag<img> by geometry.",
+  "license": "MIT",
+  "author": "cXiaof",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cXiaof/maptalks.geo2img.git"
+  },
+  "main": "dist/maptalks.geo2img.min.js",
+  "keywords": ["maptalks", "geo2img", "geojson", "svg"],
+  "bugs": {
+    "url": "https://github.com/cXiaof/maptalks.geo2img/issues"
+  },
+  "homepage": "https://github.com/cXiaof/maptalks.geo2img",
+  "scripts": {
+    "prepublish": "gulp minify",
+    "b": "gulp minify",
+    "watch": "gulp watch",
+    "w": "gulp watch",
+    "i": "jsinspect ./index.js",
+    "it": "jsinspect -t 20 ./index.js"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "babel-preset-env": "^1.7.0",
+    "gulp": "^3.9.1",
+    "jsinspect": "^0.12.7",
+    "maptalks": "^0.40.5",
+    "maptalks-build-helpers": "^0.5.0"
+  },
+  "dependencies": {
+    "geojson2svg": "^1.2.3"
+  }
+}

@@ -13,7 +13,7 @@ const map = new maptalks.Map('map', {
 const g2 = new maptalks.Geo2img()
 const layer = new maptalks.VectorLayer('sketchPad').addTo(map)
 
-const drawTool = new maptalks.DrawTool({ mode: 'Point' }).addTo(map).disable()
+const drawTool = new maptalks.DrawTool({ mode: 'Polygon' }).addTo(map).disable()
 drawTool.on('drawend', (param) => {
     const { geometry } = param
     geometry.addTo(layer)
@@ -27,7 +27,7 @@ drawTool.on('drawend', (param) => {
     imgDOM = document.createElement('img')
     imgDOM.setAttribute('id', id)
     imgDOM.setAttribute('src', base64)
-    imgDOM.setAttribute('style', 'position:absolute;top:5vh;left:5vh;transform:scaleY(1.17);')
+    imgDOM.setAttribute('style', 'position:absolute;top:0;')
     document.body.append(imgDOM)
 })
 
@@ -43,7 +43,7 @@ modes.map((item) =>
 const toolbar = new maptalks.control.Toolbar({
     items: [
         {
-            item: 'Draw',
+            item: 'Draw Once',
             children
         },
         {

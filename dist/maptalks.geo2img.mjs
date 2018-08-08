@@ -16,6 +16,12 @@ var extend = function extend(a, b) {
   return c;
 };
 
+var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+
+
+
+
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
@@ -307,6 +313,326 @@ var geojson2svg = function geojson2svg(options) {
 
 var main = geojson2svg;
 
+/**
+ * Appends the elements of `values` to `array`.
+ *
+ * @private
+ * @param {Array} array The array to modify.
+ * @param {Array} values The values to append.
+ * @returns {Array} Returns `array`.
+ */
+function arrayPush(array, values) {
+  var index = -1,
+      length = values.length,
+      offset = array.length;
+
+  while (++index < length) {
+    array[offset + index] = values[index];
+  }
+  return array;
+}
+
+var _arrayPush = arrayPush;
+
+var _typeof$2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = _typeof$2(commonjsGlobal) == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+
+var _freeGlobal = freeGlobal;
+
+var _typeof$1 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/** Detect free variable `self`. */
+var freeSelf = (typeof self === 'undefined' ? 'undefined' : _typeof$1(self)) == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = _freeGlobal || freeSelf || Function('return this')();
+
+var _root = root;
+
+/** Built-in value references. */
+var _Symbol2 = _root.Symbol;
+
+var _Symbol = _Symbol2;
+
+/** Used for built-in method references. */
+var objectProto$1 = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$1 = objectProto$1.hasOwnProperty;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString = objectProto$1.toString;
+
+/** Built-in value references. */
+var symToStringTag$1 = _Symbol ? _Symbol.toStringTag : undefined;
+
+/**
+ * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the raw `toStringTag`.
+ */
+function getRawTag(value) {
+  var isOwn = hasOwnProperty$1.call(value, symToStringTag$1),
+      tag = value[symToStringTag$1];
+
+  try {
+    value[symToStringTag$1] = undefined;
+    var unmasked = true;
+  } catch (e) {}
+
+  var result = nativeObjectToString.call(value);
+  if (unmasked) {
+    if (isOwn) {
+      value[symToStringTag$1] = tag;
+    } else {
+      delete value[symToStringTag$1];
+    }
+  }
+  return result;
+}
+
+var _getRawTag = getRawTag;
+
+/** Used for built-in method references. */
+var objectProto$2 = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString$1 = objectProto$2.toString;
+
+/**
+ * Converts `value` to a string using `Object.prototype.toString`.
+ *
+ * @private
+ * @param {*} value The value to convert.
+ * @returns {string} Returns the converted string.
+ */
+function objectToString(value) {
+  return nativeObjectToString$1.call(value);
+}
+
+var _objectToString = objectToString;
+
+/** `Object#toString` result references. */
+var nullTag = '[object Null]';
+var undefinedTag = '[object Undefined]';
+
+/** Built-in value references. */
+var symToStringTag = _Symbol ? _Symbol.toStringTag : undefined;
+
+/**
+ * The base implementation of `getTag` without fallbacks for buggy environments.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+function baseGetTag(value) {
+  if (value == null) {
+    return value === undefined ? undefinedTag : nullTag;
+  }
+  return symToStringTag && symToStringTag in Object(value) ? _getRawTag(value) : _objectToString(value);
+}
+
+var _baseGetTag = baseGetTag;
+
+var _typeof$3 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return value != null && (typeof value === 'undefined' ? 'undefined' : _typeof$3(value)) == 'object';
+}
+
+var isObjectLike_1 = isObjectLike;
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]';
+
+/**
+ * The base implementation of `_.isArguments`.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ */
+function baseIsArguments(value) {
+  return isObjectLike_1(value) && _baseGetTag(value) == argsTag;
+}
+
+var _baseIsArguments = baseIsArguments;
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/** Built-in value references. */
+var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+/**
+ * Checks if `value` is likely an `arguments` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArguments(function() { return arguments; }());
+ * // => true
+ *
+ * _.isArguments([1, 2, 3]);
+ * // => false
+ */
+var isArguments = _baseIsArguments(function () {
+  return arguments;
+}()) ? _baseIsArguments : function (value) {
+  return isObjectLike_1(value) && hasOwnProperty.call(value, 'callee') && !propertyIsEnumerable.call(value, 'callee');
+};
+
+var isArguments_1 = isArguments;
+
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(document.body.children);
+ * // => false
+ *
+ * _.isArray('abc');
+ * // => false
+ *
+ * _.isArray(_.noop);
+ * // => false
+ */
+var isArray = Array.isArray;
+
+var isArray_1 = isArray;
+
+/** Built-in value references. */
+var spreadableSymbol = _Symbol ? _Symbol.isConcatSpreadable : undefined;
+
+/**
+ * Checks if `value` is a flattenable `arguments` object or array.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is flattenable, else `false`.
+ */
+function isFlattenable(value) {
+  return isArray_1(value) || isArguments_1(value) || !!(spreadableSymbol && value && value[spreadableSymbol]);
+}
+
+var _isFlattenable = isFlattenable;
+
+/**
+ * The base implementation of `_.flatten` with support for restricting flattening.
+ *
+ * @private
+ * @param {Array} array The array to flatten.
+ * @param {number} depth The maximum recursion depth.
+ * @param {boolean} [predicate=isFlattenable] The function invoked per iteration.
+ * @param {boolean} [isStrict] Restrict to values that pass `predicate` checks.
+ * @param {Array} [result=[]] The initial result value.
+ * @returns {Array} Returns the new flattened array.
+ */
+function baseFlatten(array, depth, predicate, isStrict, result) {
+  var index = -1,
+      length = array.length;
+
+  predicate || (predicate = _isFlattenable);
+  result || (result = []);
+
+  while (++index < length) {
+    var value = array[index];
+    if (depth > 0 && predicate(value)) {
+      if (depth > 1) {
+        // Recursively flatten arrays (susceptible to call stack limits).
+        baseFlatten(value, depth - 1, predicate, isStrict, result);
+      } else {
+        _arrayPush(result, value);
+      }
+    } else if (!isStrict) {
+      result[result.length] = value;
+    }
+  }
+  return result;
+}
+
+var _baseFlatten = baseFlatten;
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0;
+
+/**
+ * Recursively flattens `array`.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category Array
+ * @param {Array} array The array to flatten.
+ * @returns {Array} Returns the new flattened array.
+ * @example
+ *
+ * _.flattenDeep([1, [2, [3, [4]], 5]]);
+ * // => [1, 2, 3, 4, 5]
+ */
+function flattenDeep(array) {
+  var length = array == null ? 0 : array.length;
+  return length ? _baseFlatten(array, INFINITY) : [];
+}
+
+var flattenDeep_1 = flattenDeep;
+
 function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -327,48 +653,94 @@ var Geo2img = function (_maptalks$Class) {
     }
 
     Geo2img.prototype.convert = function convert(geometry) {
-        var svg = this.geo2svg(geometry);
-        return 'data:image/svg+xml,' + svg;
+        this._savePrivateGeometry(geometry);
+        var svg = this.geo2svg();
+        svg = 'data:image/svg+xml,' + svg;
+        delete this.geometry;
+        delete this.map;
+        return svg;
     };
 
-    Geo2img.prototype.geo2svg = function geo2svg(geometry) {
-        var mapExtent = this._getMapExtent(geometry);
-        var style = this._getStyle(geometry);
+    Geo2img.prototype.geo2svg = function geo2svg() {
+        var viewportSize = this._getViewportSize();
+        var width = viewportSize.width,
+            height = viewportSize.height;
+
+        var style = this._getStyle();
+        var mapExtent = this._getMapExtent();
+
         var option = {
-            viewportSize: { width: 100, height: 100 },
+            viewportSize: viewportSize,
             attributes: { style: style, 'vector-effect': 'non-scaling-stroke' },
             mapExtent: mapExtent
         };
         var converter = main(option);
 
-        var svgText = '<svg xmlns="http://www.w3.org/2000/svg" width="' + option.viewportSize.width + '" height="' + option.viewportSize.height + '" x="0" y="0">';
-
-        var svgStrings = converter.convert(geometry.toGeoJSON());
-
+        var svgText = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '" x="0" y="0" style="transform: translateY(8%) scaleY(1.18);">';
+        var svgStrings = converter.convert(this.geometry.toGeoJSON());
         svgText += svgStrings + '</svg>';
+
         return svgText;
     };
 
-    Geo2img.prototype._getStyle = function _getStyle(geo) {
-        var _geo$getSymbol = geo.getSymbol(),
-            lineColor = _geo$getSymbol.lineColor,
-            lineWidth = _geo$getSymbol.lineWidth,
-            lineDasharray = _geo$getSymbol.lineDasharray,
-            polygonFill = _geo$getSymbol.polygonFill,
-            polygonOpacity = _geo$getSymbol.polygonOpacity;
+    Geo2img.prototype._savePrivateGeometry = function _savePrivateGeometry(geometry) {
+        this.geometry = geometry;
+        var layer = geometry._layer;
+        if (geometry.type.startsWith('Multi')) layer = geometry._geometries[0]._layer;
+        this.map = layer.map;
+    };
+
+    Geo2img.prototype._getViewportSize = function _getViewportSize() {
+        var _this2 = this;
+
+        var coords = this.geometry.getCoordinates();
+        var xmin = void 0,
+            xmax = void 0,
+            ymin = void 0,
+            ymax = void 0;
+        flattenDeep_1(coords).forEach(function (coord, index) {
+            var _map$coordinateToCont = _this2.map.coordinateToContainerPoint(coord),
+                x = _map$coordinateToCont.x,
+                y = _map$coordinateToCont.y;
+
+            if (index === 0) {
+                xmin = x;
+                xmax = x;
+                ymin = y;
+                ymax = y;
+            } else {
+                xmin = Math.min(x, xmin);
+                xmax = Math.max(x, xmax);
+                ymin = Math.min(y, ymin);
+                ymax = Math.max(y, ymax);
+            }
+        });
+        var safe = 2;
+        var width = parseInt(xmax, 0) - parseInt(xmin, 0) + safe;
+        var height = parseInt(ymax, 0) - parseInt(ymin, 0) + safe;
+        return { width: width, height: height };
+    };
+
+    Geo2img.prototype._getStyle = function _getStyle() {
+        var _geometry$getSymbol = this.geometry.getSymbol(),
+            lineColor = _geometry$getSymbol.lineColor,
+            lineWidth = _geometry$getSymbol.lineWidth,
+            lineDasharray = _geometry$getSymbol.lineDasharray,
+            polygonFill = _geometry$getSymbol.polygonFill,
+            polygonOpacity = _geometry$getSymbol.polygonOpacity;
 
         var stroke = lineColor ? lineColor : 'transparent';
         var strokeWidth = lineWidth ? lineWidth + 'px' : '1px';
         var strokeDasharray = lineDasharray ? lineDasharray.toString() : 'none';
         var fill = polygonFill ? polygonFill : 'transparent';
         var fillOpacity = polygonOpacity === 0 ? 0 : polygonOpacity ? polygonOpacity : 1;
-        var style = 'stroke:' + stroke + ';fill:' + fill + ';stroke-dasharray:' + strokeDasharray + ';fill-opacity:' + fillOpacity + ';stroke-width:' + strokeWidth + ';';
+
+        var style = 'stroke:' + stroke + ';fill:' + fill + ';stroke-dasharray:' + strokeDasharray + ';fill-opacity:' + fillOpacity + ';stroke-width:' + strokeWidth + ';transform:translate(1%,1%) scale(0.98);';
         return style;
     };
 
-    Geo2img.prototype._getMapExtent = function _getMapExtent(geo) {
-        console.log(JSON.stringify(geo.toGeoJSON()));
-        var extent = geo.getExtent();
+    Geo2img.prototype._getMapExtent = function _getMapExtent() {
+        var extent = this.geometry.getExtent();
         var xmin = extent.xmin,
             xmax = extent.xmax,
             ymin = extent.ymin,

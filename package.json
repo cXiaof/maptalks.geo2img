@@ -9,7 +9,12 @@
     "url": "https://github.com/cXiaof/maptalks.geo2img.git"
   },
   "main": "dist/maptalks.geo2img.min.js",
-  "keywords": ["maptalks", "geo2img", "geojson", "svg"],
+  "keywords": [
+    "maptalks",
+    "geo2img",
+    "geojson",
+    "svg"
+  ],
   "bugs": {
     "url": "https://github.com/cXiaof/maptalks.geo2img/issues"
   },
@@ -31,6 +36,7 @@
     "maptalks-build-helpers": "^0.5.0"
   },
   "dependencies": {
-    "geojson2svg": "^1.2.3"
+    "geojson2svg": "^1.2.3",
+    "lodash": "^4.17.10"
   }
 }

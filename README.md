@@ -21,11 +21,11 @@ As a plugin, `maptalks.geo2img` must be loaded after `maptalks.js` in browsers. 
 <script type="text/javascript" src="https://unpkg.com/maptalks.geo2img/dist/maptalks.geo2img.min.js"></script>
 <script>
     // new Geo2img and layer
-    const ms = new maptalks.Geo2img()
     const layer = new maptalks.VectorLayer('v').addTo(map)
+    const geo2img = new maptalks.Geo2img()
 
-    // use Geo2img API, targets is not necessary parameters and if no targets user will choose geometry on the map
-    // get details in API Reference
+    const base64src = geo2img.convert(geometry)
+    // <img src=base64src >
 </script>
 ```
 
@@ -38,14 +38,7 @@ new maptalks.Geo2img()
 -   options
     -   none
 
-`intersection(geometry, targets)`
-`union(geometry, targets)`
-`diff(geometry, targets)`
-`xor(geometry, targets)`
-
-`submit(callback)` callback can get two attr, the result and deals which be remove in task
-`cancel()`
-`remove()`
+`convert(geometry)` The result is base64 data for img src="%s", geometry should be add to layer.
 
 ## Contributing
 
@@ -100,4 +93,5 @@ $ npm run lint
 -   [maptalks.autoadsorb](https://github.com/cXiaof/maptalks.autoadsorb/issues)
 -   [maptalks.multisuite](https://github.com/cXiaof/maptalks.multisuite/issues)
 -   [maptalks.geosplit](https://github.com/cXiaof/maptalks.geosplit/issues)
+-   [maptalks.polygonbool](https://github.com/cXiaof/maptalks.polygonbool/issues)
 -   [maptalks.geo2img](https://github.com/cXiaof/maptalks.geo2img/issues)

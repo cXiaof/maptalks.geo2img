@@ -1,6 +1,6 @@
 # maptalks.geo2img
 
-A tool to get base64 data src for html-tag<img> by geometry.
+A tool to get base64 data src for html-tag< img > by geometry.
 
 ## Examples
 

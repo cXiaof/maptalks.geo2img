@@ -1,20 +1,30 @@
 import geojson2svg from 'geojson2svg'
 import flattenDeep from 'lodash/flattenDeep'
 
-const options = {}
+const options = {
+    useGeoExtent: true
+}
 
 export class Geo2img extends maptalks.Class {
     constructor(options) {
         super(options)
     }
 
+    setMap(map) {
+        this.map = map
+        return this
+    }
+
     convert(geometry) {
         this._savePrivateGeometry(geometry)
         let svg = this.geo2svg()
         svg = `data:image/svg+xml,${svg}`
+        return svg
+    }
+
+    remove() {
         delete this.geometry
         delete this.map
-        return svg
     }
 
     geo2svg() {
@@ -39,9 +49,8 @@ export class Geo2img extends maptalks.Class {
 
     _savePrivateGeometry(geometry) {
         this.geometry = geometry
-        let layer = geometry._layer
-        if (geometry.type.startsWith('Multi')) layer = geometry._geometries[0]._layer
-        this.map = layer.map
+        const map = this.geometry.getMap()
+        if (map) this.map = map
     }
 
     _getViewportSize() {
@@ -68,13 +77,10 @@ export class Geo2img extends maptalks.Class {
     }
 
     _getStyle() {
-        const {
-            lineColor,
-            lineWidth,
-            lineDasharray,
-            polygonFill,
-            polygonOpacity
-        } = this.geometry.getSymbol()
+        let style = 'transform:translate(1%,1%) scale(0.98);'
+        const symbol = this.geometry.getSymbol()
+        if (!symbol) return style
+        const { lineColor, lineWidth, lineDasharray, polygonFill, polygonOpacity } = symbol
 
         const stroke = lineColor ? lineColor : 'transparent'
         const strokeWidth = lineWidth ? `${lineWidth}px` : '1px'
@@ -82,12 +88,14 @@ export class Geo2img extends maptalks.Class {
         const fill = polygonFill ? polygonFill : 'transparent'
         const fillOpacity = polygonOpacity === 0 ? 0 : polygonOpacity ? polygonOpacity : 1
 
-        const style = `stroke:${stroke};fill:${fill};stroke-dasharray:${strokeDasharray};fill-opacity:${fillOpacity};stroke-width:${strokeWidth};transform:translate(1%,1%) scale(0.98);`
+        style += `stroke:${stroke};fill:${fill};stroke-dasharray:${strokeDasharray};fill-opacity:${fillOpacity};stroke-width:${strokeWidth};`
         return style
     }
 
     _getMapExtent() {
-        const extent = this.geometry.getExtent()
+        const extent = this.options['useGeoExtent']
+            ? this.geometry.getExtent()
+            : this.map.getExtent()
         const { xmin, xmax, ymin, ymax } = extent
         return {
             left: xmin,

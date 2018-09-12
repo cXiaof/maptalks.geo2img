@@ -36,9 +36,11 @@ new maptalks.Geo2img()
 ```
 
 -   options
-    -   none
+    -   useGeoExtent **boolean** set true to use geometry extent and false to use map extent, default is true.
 
 `convert(geometry)` The result is base64 data for img src="%s", geometry should be add to layer.
+`setMap(map)` if you geometry has not add to layer,you need set map for plugin.
+`remove()`
 
 ## Contributing
 

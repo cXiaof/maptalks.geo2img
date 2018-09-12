@@ -1,5 +1,5 @@
 /*!
- * maptalks.geo2img v0.1.0-alpha.1
+ * maptalks.geo2img v0.1.0-alpha.2
  * LICENSE : MIT
  * (c) 2016-2018 maptalks.org
  */
@@ -647,7 +647,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 
-var options = {};
+var options = {
+    useGeoExtent: true
+};
 
 var Geo2img = function (_maptalks$Class) {
     _inherits(Geo2img, _maptalks$Class);
@@ -658,13 +660,21 @@ var Geo2img = function (_maptalks$Class) {
         return _possibleConstructorReturn(this, _maptalks$Class.call(this, options));
     }
 
+    Geo2img.prototype.setMap = function setMap(map) {
+        this.map = map;
+        return this;
+    };
+
     Geo2img.prototype.convert = function convert(geometry) {
         this._savePrivateGeometry(geometry);
         var svg = this.geo2svg();
         svg = 'data:image/svg+xml,' + svg;
+        return svg;
+    };
+
+    Geo2img.prototype.remove = function remove() {
         delete this.geometry;
         delete this.map;
-        return svg;
     };
 
     Geo2img.prototype.geo2svg = function geo2svg() {
@@ -691,9 +701,8 @@ var Geo2img = function (_maptalks$Class) {
 
     Geo2img.prototype._savePrivateGeometry = function _savePrivateGeometry(geometry) {
         this.geometry = geometry;
-        var layer = geometry._layer;
-        if (geometry.type.startsWith('Multi')) layer = geometry._geometries[0]._layer;
-        this.map = layer.map;
+        var map = this.geometry.getMap();
+        if (map) this.map = map;
     };
 
     Geo2img.prototype._getViewportSize = function _getViewportSize() {
@@ -728,12 +737,15 @@ var Geo2img = function (_maptalks$Class) {
     };
 
     Geo2img.prototype._getStyle = function _getStyle() {
-        var _geometry$getSymbol = this.geometry.getSymbol(),
-            lineColor = _geometry$getSymbol.lineColor,
-            lineWidth = _geometry$getSymbol.lineWidth,
-            lineDasharray = _geometry$getSymbol.lineDasharray,
-            polygonFill = _geometry$getSymbol.polygonFill,
-            polygonOpacity = _geometry$getSymbol.polygonOpacity;
+        var style = 'transform:translate(1%,1%) scale(0.98);';
+        var symbol = this.geometry.getSymbol();
+        if (!symbol) return style;
+        var lineColor = symbol.lineColor,
+            lineWidth = symbol.lineWidth,
+            lineDasharray = symbol.lineDasharray,
+            polygonFill = symbol.polygonFill,
+            polygonOpacity = symbol.polygonOpacity;
+
 
         var stroke = lineColor ? lineColor : 'transparent';
         var strokeWidth = lineWidth ? lineWidth + 'px' : '1px';
@@ -741,12 +753,12 @@ var Geo2img = function (_maptalks$Class) {
         var fill = polygonFill ? polygonFill : 'transparent';
         var fillOpacity = polygonOpacity === 0 ? 0 : polygonOpacity ? polygonOpacity : 1;
 
-        var style = 'stroke:' + stroke + ';fill:' + fill + ';stroke-dasharray:' + strokeDasharray + ';fill-opacity:' + fillOpacity + ';stroke-width:' + strokeWidth + ';transform:translate(1%,1%) scale(0.98);';
+        style += 'stroke:' + stroke + ';fill:' + fill + ';stroke-dasharray:' + strokeDasharray + ';fill-opacity:' + fillOpacity + ';stroke-width:' + strokeWidth + ';';
         return style;
     };
 
     Geo2img.prototype._getMapExtent = function _getMapExtent() {
-        var extent = this.geometry.getExtent();
+        var extent = this.options['useGeoExtent'] ? this.geometry.getExtent() : this.map.getExtent();
         var xmin = extent.xmin,
             xmax = extent.xmax,
             ymin = extent.ymin,
@@ -769,6 +781,6 @@ exports.Geo2img = Geo2img;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-typeof console !== 'undefined' && console.log('maptalks.geo2img v0.1.0-alpha.1');
+typeof console !== 'undefined' && console.log('maptalks.geo2img v0.1.0-alpha.2');
 
 })));

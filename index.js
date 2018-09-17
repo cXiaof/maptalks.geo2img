@@ -54,7 +54,7 @@ export class Geo2img extends maptalks.Class {
     }
 
     _getViewportSize() {
-        const coords = this.geometry.getCoordinates()
+        const coords = this._getSafeCoords()
         let xmin, xmax, ymin, ymax
         flattenDeep(coords).forEach((coord, index) => {
             const { x, y } = this.map.coordinateToContainerPoint(coord)
@@ -74,6 +74,13 @@ export class Geo2img extends maptalks.Class {
         const width = parseInt(xmax, 0) - parseInt(xmin, 0) + safe
         const height = parseInt(ymax, 0) - parseInt(ymin, 0) + safe
         return { width, height }
+    }
+
+    _getSafeCoords() {
+        const coordinates = this.geometry.toGeoJSON().geometry.coordinates[0]
+        let coords = []
+        coordinates.forEach((coord) => coords.push(new maptalks.Coordinate(coord)))
+        return [coords]
     }
 
     _getStyle() {

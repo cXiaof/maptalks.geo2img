@@ -78,6 +78,10 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@maptalks/feature-filter@^1.0.0":
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/@maptalks/feature-filter/download/@maptalks/feature-filter-1.0.0.tgz#bfcc7f705e6de5c6c3d3802a3b5081272c877fc8"
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -2124,9 +2128,9 @@ lodash@^3.8.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.17.10:
-  version "4.17.10"
-  resolved "http://registry.npm.taobao.org/lodash/download/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
+lodash@^4.17.11:
+  version "4.17.11"
+  resolved "http://registry.npm.taobao.org/lodash/download/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
 lodash@^4.17.4, lodash@^4.2.0, lodash@^4.5.0:
   version "4.17.10"
@@ -2203,10 +2207,11 @@ maptalks-rollup-plugin-babel@^3.0.2:
   dependencies:
     rollup-pluginutils "^1.5.0"
 
-maptalks@^0.40.5:
-  version "0.40.5"
-  resolved "http://registry.npm.taobao.org/maptalks/download/maptalks-0.40.5.tgz#08d4bf3de8a99f0684965a2179e12522ec65d5a3"
+maptalks@^0.41.1:
+  version "0.41.1"
+  resolved "http://registry.npm.taobao.org/maptalks/download/maptalks-0.41.1.tgz#cdfde5defc8fd8118a6685973955c42b657c9be5"
   dependencies:
+    "@maptalks/feature-filter" "^1.0.0"
     simplify-js "^1.2.1"
     zousan "^2.3.3"
 

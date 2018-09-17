@@ -1,6 +1,6 @@
 {
   "name": "maptalks.geo2img",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "description": "A tool to get base64 data src for html-tag<img> by geometry.",
   "license": "MIT",
   "author": "cXiaof",
@@ -27,11 +27,11 @@
     "babel-preset-env": "^1.7.0",
     "gulp": "^3.9.1",
     "jsinspect": "^0.12.7",
-    "maptalks": "^0.40.5",
+    "maptalks": "^0.41.1",
     "maptalks-build-helpers": "^0.5.0"
   },
   "dependencies": {
     "geojson2svg": "^1.2.3",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.11"
   }
 }

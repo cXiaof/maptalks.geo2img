@@ -1,5 +1,5 @@
 /*!
- * maptalks.geo2img v0.1.0-alpha.2
+ * maptalks.geo2img v0.1.0-alpha.3
  * LICENSE : MIT
  * (c) 2016-2018 maptalks.org
  */
@@ -708,7 +708,7 @@ var Geo2img = function (_maptalks$Class) {
     Geo2img.prototype._getViewportSize = function _getViewportSize() {
         var _this2 = this;
 
-        var coords = this.geometry.getCoordinates();
+        var coords = this._getSafeCoords();
         var xmin = void 0,
             xmax = void 0,
             ymin = void 0,
@@ -734,6 +734,15 @@ var Geo2img = function (_maptalks$Class) {
         var width = parseInt(xmax, 0) - parseInt(xmin, 0) + safe;
         var height = parseInt(ymax, 0) - parseInt(ymin, 0) + safe;
         return { width: width, height: height };
+    };
+
+    Geo2img.prototype._getSafeCoords = function _getSafeCoords() {
+        var coordinates = this.geometry.toGeoJSON().geometry.coordinates[0];
+        var coords = [];
+        coordinates.forEach(function (coord) {
+            return coords.push(new maptalks.Coordinate(coord));
+        });
+        return [coords];
     };
 
     Geo2img.prototype._getStyle = function _getStyle() {
@@ -781,6 +790,6 @@ exports.Geo2img = Geo2img;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-typeof console !== 'undefined' && console.log('maptalks.geo2img v0.1.0-alpha.2');
+typeof console !== 'undefined' && console.log('maptalks.geo2img v0.1.0-alpha.3');
 
 })));

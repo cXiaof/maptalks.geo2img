@@ -615,29 +615,236 @@ function baseFlatten(array, depth, predicate, isStrict, result) {
 
 var _baseFlatten = baseFlatten;
 
-/** Used as references for various `Number` constants. */
-var INFINITY = 1 / 0;
+var _typeof$4 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /**
- * Recursively flattens `array`.
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
  *
  * @static
  * @memberOf _
- * @since 3.0.0
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value === 'undefined' ? 'undefined' : _typeof$4(value);
+  return value != null && (type == 'object' || type == 'function');
+}
+
+var isObject_1 = isObject;
+
+var _typeof$5 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/** `Object#toString` result references. */
+var symbolTag = '[object Symbol]';
+
+/**
+ * Checks if `value` is classified as a `Symbol` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+ * @example
+ *
+ * _.isSymbol(Symbol.iterator);
+ * // => true
+ *
+ * _.isSymbol('abc');
+ * // => false
+ */
+function isSymbol(value) {
+  return (typeof value === 'undefined' ? 'undefined' : _typeof$5(value)) == 'symbol' || isObjectLike_1(value) && _baseGetTag(value) == symbolTag;
+}
+
+var isSymbol_1 = isSymbol;
+
+/** Used as references for various `Number` constants. */
+var NAN = 0 / 0;
+
+/** Used to match leading and trailing whitespace. */
+var reTrim = /^\s+|\s+$/g;
+
+/** Used to detect bad signed hexadecimal string values. */
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+/** Used to detect binary string values. */
+var reIsBinary = /^0b[01]+$/i;
+
+/** Used to detect octal string values. */
+var reIsOctal = /^0o[0-7]+$/i;
+
+/** Built-in method references without a dependency on `root`. */
+var freeParseInt = parseInt;
+
+/**
+ * Converts `value` to a number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {number} Returns the number.
+ * @example
+ *
+ * _.toNumber(3.2);
+ * // => 3.2
+ *
+ * _.toNumber(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toNumber(Infinity);
+ * // => Infinity
+ *
+ * _.toNumber('3.2');
+ * // => 3.2
+ */
+function toNumber(value) {
+  if (typeof value == 'number') {
+    return value;
+  }
+  if (isSymbol_1(value)) {
+    return NAN;
+  }
+  if (isObject_1(value)) {
+    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+    value = isObject_1(other) ? other + '' : other;
+  }
+  if (typeof value != 'string') {
+    return value === 0 ? value : +value;
+  }
+  value = value.replace(reTrim, '');
+  var isBinary = reIsBinary.test(value);
+  return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
+}
+
+var toNumber_1 = toNumber;
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0;
+var MAX_INTEGER = 1.7976931348623157e+308;
+
+/**
+ * Converts `value` to a finite number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.12.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted number.
+ * @example
+ *
+ * _.toFinite(3.2);
+ * // => 3.2
+ *
+ * _.toFinite(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toFinite(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toFinite('3.2');
+ * // => 3.2
+ */
+function toFinite(value) {
+  if (!value) {
+    return value === 0 ? value : 0;
+  }
+  value = toNumber_1(value);
+  if (value === INFINITY || value === -INFINITY) {
+    var sign = value < 0 ? -1 : 1;
+    return sign * MAX_INTEGER;
+  }
+  return value === value ? value : 0;
+}
+
+var toFinite_1 = toFinite;
+
+/**
+ * Converts `value` to an integer.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted integer.
+ * @example
+ *
+ * _.toInteger(3.2);
+ * // => 3
+ *
+ * _.toInteger(Number.MIN_VALUE);
+ * // => 0
+ *
+ * _.toInteger(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toInteger('3.2');
+ * // => 3
+ */
+function toInteger(value) {
+  var result = toFinite_1(value),
+      remainder = result % 1;
+
+  return result === result ? remainder ? result - remainder : result : 0;
+}
+
+var toInteger_1 = toInteger;
+
+/**
+ * Recursively flatten `array` up to `depth` times.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.4.0
  * @category Array
  * @param {Array} array The array to flatten.
+ * @param {number} [depth=1] The maximum recursion depth.
  * @returns {Array} Returns the new flattened array.
  * @example
  *
- * _.flattenDeep([1, [2, [3, [4]], 5]]);
- * // => [1, 2, 3, 4, 5]
+ * var array = [1, [2, [3, [4]], 5]];
+ *
+ * _.flattenDepth(array, 1);
+ * // => [1, 2, [3, [4]], 5]
+ *
+ * _.flattenDepth(array, 2);
+ * // => [1, 2, 3, [4], 5]
  */
-function flattenDeep(array) {
+function flattenDepth(array, depth) {
   var length = array == null ? 0 : array.length;
-  return length ? _baseFlatten(array, INFINITY) : [];
+  if (!length) {
+    return [];
+  }
+  depth = depth === undefined ? 1 : toInteger_1(depth);
+  return _baseFlatten(array, depth);
 }
 
-var flattenDeep_1 = flattenDeep;
+var flattenDepth_1 = flattenDepth;
 
 function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
 
@@ -667,7 +874,7 @@ var Geo2img = function (_maptalks$Class) {
 
     Geo2img.prototype.convert = function convert(geometry) {
         this._savePrivateGeometry(geometry);
-        var svg = this.geo2svg();
+        var svg = this._geo2svg();
         svg = 'data:image/svg+xml,' + svg;
         return svg;
     };
@@ -677,7 +884,13 @@ var Geo2img = function (_maptalks$Class) {
         delete this.map;
     };
 
-    Geo2img.prototype.geo2svg = function geo2svg() {
+    Geo2img.prototype._savePrivateGeometry = function _savePrivateGeometry(geometry) {
+        this.geometry = geometry;
+        var map = this.geometry.getMap();
+        if (map) this.map = map;
+    };
+
+    Geo2img.prototype._geo2svg = function _geo2svg() {
         var viewportSize = this._getViewportSize();
         var width = viewportSize.width,
             height = viewportSize.height;
@@ -699,22 +912,20 @@ var Geo2img = function (_maptalks$Class) {
         return svgText;
     };
 
-    Geo2img.prototype._savePrivateGeometry = function _savePrivateGeometry(geometry) {
-        this.geometry = geometry;
-        var map = this.geometry.getMap();
-        if (map) this.map = map;
-    };
-
     Geo2img.prototype._getViewportSize = function _getViewportSize() {
         var _this2 = this;
 
-        var coords = this._getSafeCoords();
+        var coordinates = this.geometry.toGeoJSON().geometry.coordinates;
+
+        var depth = this.geometry.getType().startsWith('Multi') ? 2 : 1;
         var xmin = void 0,
             xmax = void 0,
             ymin = void 0,
             ymax = void 0;
-        flattenDeep_1(coords).forEach(function (coord, index) {
-            var _map$coordinateToCont = _this2.map.coordinateToContainerPoint(coord),
+        flattenDepth_1(coordinates, depth).forEach(function (coordArr, index) {
+            var coordObj = new maptalks.Coordinate(coordArr);
+
+            var _map$coordinateToCont = _this2.map.coordinateToContainerPoint(coordObj),
                 x = _map$coordinateToCont.x,
                 y = _map$coordinateToCont.y;
 
@@ -736,15 +947,6 @@ var Geo2img = function (_maptalks$Class) {
         return { width: width, height: height };
     };
 
-    Geo2img.prototype._getSafeCoords = function _getSafeCoords() {
-        var coordinates = this.geometry.toGeoJSON().geometry.coordinates[0];
-        var coords = [];
-        coordinates.forEach(function (coord) {
-            return coords.push(new maptalks.Coordinate(coord));
-        });
-        return [coords];
-    };
-
     Geo2img.prototype._getStyle = function _getStyle() {
         var style = 'transform:translate(1%,1%) scale(0.98);';
         var symbol = this.geometry.getSymbol();
@@ -756,8 +958,8 @@ var Geo2img = function (_maptalks$Class) {
             polygonOpacity = symbol.polygonOpacity;
 
 
-        var stroke = lineColor ? lineColor : 'transparent';
-        var strokeWidth = lineWidth ? lineWidth + 'px' : '1px';
+        var stroke = lineColor ? lineColor : 'black';
+        var strokeWidth = lineWidth ? lineWidth + 'px' : '2px';
         var strokeDasharray = lineDasharray ? lineDasharray.toString() : 'none';
         var fill = polygonFill ? polygonFill : 'transparent';
         var fillOpacity = polygonOpacity === 0 ? 0 : polygonOpacity ? polygonOpacity : 1;

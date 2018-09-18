@@ -1,5 +1,5 @@
 import geojson2svg from 'geojson2svg'
-import flattenDeep from 'lodash/flattenDeep'
+import flattenDepth from 'lodash/flattenDepth'
 
 const options = {
     useGeoExtent: true
@@ -17,7 +17,7 @@ export class Geo2img extends maptalks.Class {
 
     convert(geometry) {
         this._savePrivateGeometry(geometry)
-        let svg = this.geo2svg()
+        let svg = this._geo2svg()
         svg = `data:image/svg+xml,${svg}`
         return svg
     }
@@ -27,7 +27,13 @@ export class Geo2img extends maptalks.Class {
         delete this.map
     }
 
-    geo2svg() {
+    _savePrivateGeometry(geometry) {
+        this.geometry = geometry
+        const map = this.geometry.getMap()
+        if (map) this.map = map
+    }
+
+    _geo2svg() {
         const viewportSize = this._getViewportSize()
         const { width, height } = viewportSize
         const style = this._getStyle()
@@ -47,17 +53,13 @@ export class Geo2img extends maptalks.Class {
         return svgText
     }
 
-    _savePrivateGeometry(geometry) {
-        this.geometry = geometry
-        const map = this.geometry.getMap()
-        if (map) this.map = map
-    }
-
     _getViewportSize() {
-        const coords = this._getSafeCoords()
+        const { coordinates } = this.geometry.toGeoJSON().geometry
+        const depth = this.geometry.getType().startsWith('Multi') ? 2 : 1
         let xmin, xmax, ymin, ymax
-        flattenDeep(coords).forEach((coord, index) => {
-            const { x, y } = this.map.coordinateToContainerPoint(coord)
+        flattenDepth(coordinates, depth).forEach((coordArr, index) => {
+            const coordObj = new maptalks.Coordinate(coordArr)
+            const { x, y } = this.map.coordinateToContainerPoint(coordObj)
             if (index === 0) {
                 xmin = x
                 xmax = x
@@ -76,21 +78,14 @@ export class Geo2img extends maptalks.Class {
         return { width, height }
     }
 
-    _getSafeCoords() {
-        const coordinates = this.geometry.toGeoJSON().geometry.coordinates[0]
-        let coords = []
-        coordinates.forEach((coord) => coords.push(new maptalks.Coordinate(coord)))
-        return [coords]
-    }
-
     _getStyle() {
         let style = 'transform:translate(1%,1%) scale(0.98);'
         const symbol = this.geometry.getSymbol()
         if (!symbol) return style
         const { lineColor, lineWidth, lineDasharray, polygonFill, polygonOpacity } = symbol
 
-        const stroke = lineColor ? lineColor : 'transparent'
-        const strokeWidth = lineWidth ? `${lineWidth}px` : '1px'
+        const stroke = lineColor ? lineColor : 'black'
+        const strokeWidth = lineWidth ? `${lineWidth}px` : '2px'
         const strokeDasharray = lineDasharray ? lineDasharray.toString() : 'none'
         const fill = polygonFill ? polygonFill : 'transparent'
         const fillOpacity = polygonOpacity === 0 ? 0 : polygonOpacity ? polygonOpacity : 1

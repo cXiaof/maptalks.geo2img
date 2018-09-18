@@ -10,7 +10,7 @@ const map = new maptalks.Map('map', {
     })
 })
 
-const g2 = new maptalks.Geo2img()
+const g2 = new maptalks.Geo2img().setMap(map)
 const layer = new maptalks.VectorLayer('sketchPad').addTo(map)
 
 const drawTool = new maptalks.DrawTool({ mode: 'Polygon' }).addTo(map).disable()
@@ -18,8 +18,10 @@ drawTool.on('drawend', (param) => {
     const { geometry } = param
     geometry.addTo(layer)
     drawTool.disable()
+    convertGeoToIMG(geometry)
+})
 
-    //
+const convertGeoToIMG = (geometry) => {
     const id = '_demo'
     let imgDOM = document.getElementById(id)
     if (imgDOM) imgDOM.remove()
@@ -29,7 +31,7 @@ drawTool.on('drawend', (param) => {
     imgDOM.setAttribute('src', base64)
     imgDOM.setAttribute('style', 'position:absolute;top:0;')
     document.body.append(imgDOM)
-})
+}
 
 const modes = ['LineString', 'Polygon', 'Rectangle', 'Circle', 'Ellipse']
 let children = []
@@ -47,8 +49,15 @@ const toolbar = new maptalks.control.Toolbar({
             children
         },
         {
-            item: 'Stop',
-            click: () => drawTool.disable()
+            item: 'Convert As Multi',
+            click: () => {
+                let geos = []
+                layer.getGeometries().forEach((geo) => {
+                    if (geo.getType() === 'Polygon') geos.push(geo)
+                })
+                const multiGeo = new maptalks.MultiPolygon(geos)
+                convertGeoToIMG(multiGeo)
+            }
         },
         {
             item: 'Clear',

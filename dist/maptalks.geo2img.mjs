@@ -866,7 +866,8 @@ var Geo2img = function (_maptalks$Class) {
         return this;
     };
 
-    Geo2img.prototype.convert = function convert(geometry) {
+    Geo2img.prototype.convert = function convert(geometry, map) {
+        if (map) this.setMap(map);
         this._savePrivateGeometry(geometry);
         var svg = this._geo2svg();
         svg = 'data:image/svg+xml,' + svg;
@@ -909,9 +910,11 @@ var Geo2img = function (_maptalks$Class) {
     Geo2img.prototype._getViewportSize = function _getViewportSize() {
         var _this2 = this;
 
+        var type = this.geometry.getType();
         var coordinates = this.geometry.toGeoJSON().geometry.coordinates;
 
-        var depth = this.geometry.getType().startsWith('Multi') ? 2 : 1;
+        var depth = type.startsWith('Multi') ? 2 : 1;
+        if (!type.endsWith('Polygon')) depth--;
         var xmin = void 0,
             xmax = void 0,
             ymin = void 0,

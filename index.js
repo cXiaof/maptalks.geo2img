@@ -15,7 +15,8 @@ export class Geo2img extends maptalks.Class {
         return this
     }
 
-    convert(geometry) {
+    convert(geometry, map) {
+        if (map) this.setMap(map)
         this._savePrivateGeometry(geometry)
         let svg = this._geo2svg()
         svg = `data:image/svg+xml,${svg}`
@@ -54,8 +55,10 @@ export class Geo2img extends maptalks.Class {
     }
 
     _getViewportSize() {
+        const type = this.geometry.getType()
         const { coordinates } = this.geometry.toGeoJSON().geometry
-        const depth = this.geometry.getType().startsWith('Multi') ? 2 : 1
+        let depth = type.startsWith('Multi') ? 2 : 1
+        if (!type.endsWith('Polygon')) depth--
         let xmin, xmax, ymin, ymax
         flattenDepth(coordinates, depth).forEach((coordArr, index) => {
             const coordObj = new maptalks.Coordinate(coordArr)

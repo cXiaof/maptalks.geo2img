@@ -1,6 +1,6 @@
 {
   "name": "maptalks.geo2img",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-beta.1",
   "description": "A tool to get base64 data src for html-tag<img> by geometry.",
   "license": "MIT",
   "author": "cXiaof",

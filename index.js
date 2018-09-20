@@ -50,6 +50,7 @@ export class Geo2img extends maptalks.Class {
         let svgText = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" x="0" y="0" style="transform: translateY(8%) scaleY(1.18);">`
         const svgStrings = converter.convert(this.geometry.toGeoJSON())
         svgText += `${svgStrings}</svg>`
+        svgText = svgText.replace(/#/g, '%23')
 
         return svgText
     }

@@ -1,5 +1,5 @@
 /*!
- * maptalks.geo2img v0.1.0-alpha.3
+ * maptalks.geo2img v0.1.0-beta.1
  * LICENSE : MIT
  * (c) 2016-2018 maptalks.org
  */
@@ -909,6 +909,7 @@ var Geo2img = function (_maptalks$Class) {
         var svgText = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '" x="0" y="0" style="transform: translateY(8%) scaleY(1.18);">';
         var svgStrings = converter.convert(this.geometry.toGeoJSON());
         svgText += svgStrings + '</svg>';
+        svgText = svgText.replace(/#/g, '%23');
 
         return svgText;
     };
@@ -995,6 +996,6 @@ exports.Geo2img = Geo2img;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-typeof console !== 'undefined' && console.log('maptalks.geo2img v0.1.0-alpha.3');
+typeof console !== 'undefined' && console.log('maptalks.geo2img v0.1.0-beta.1');
 
 })));

@@ -9,30 +9,30 @@ A tool to get base64 data src for html-tag< img > by geometry.
 ## Install
 
 -   Install with npm: `npm install maptalks.geo2img`.
+-   Install with yarn: `yarn add maptalks.geo2img`.
 -   Download from [dist directory](https://github.com/cXiaof/maptalks.geo2img/tree/master/dist).
--   Use unpkg CDN: `https://unpkg.com/maptalks.geo2img/dist/maptalks.geo2img.min.js`
+-   Use unpkg CDN: `https://cdn.jsdelivr.net/npm/maptalks.geo2img/dist/maptalks.geo2img.min.js`
 
 ## Usage
 
 As a plugin, `maptalks.geo2img` must be loaded after `maptalks.js` in browsers. You can also use `'import { Geo2img } from "maptalks.geo2img"` when developing with webpack.
 
 ```html
-<script type="text/javascript" src="https://unpkg.com/maptalks/dist/maptalks.min.js"></script>
-<script type="text/javascript" src="https://unpkg.com/maptalks.geo2img/dist/maptalks.geo2img.min.js"></script>
-<script>
-    // new Geo2img and layer
-    const layer = new maptalks.VectorLayer('v').addTo(map)
-    const geo2img = new maptalks.Geo2img()
+<!-- ... -->
+<script src="https://cdn.jsdelivr.net/npm/maptalks.geo2img/dist/maptalks.geo2img.min.js"></script>
+<!-- ... -->
+```
 
-    const base64src = geo2img.convert(geometry)
-    // <img src=base64src >
-</script>
+```javascript
+const geo2img = new maptalks.Geo2img()
+const base64src = geo2img.convert(geometry)
+// <img src=base64src >
 ```
 
 ## API Reference
 
 ```javascript
-new maptalks.Geo2img()
+new maptalks.Geo2img(options)
 ```
 
 -   options
@@ -64,18 +64,6 @@ $ npm install
 
 ```shell
 $ gulp watch
-```
-
--   Tests
-
-```shell
-$ npm test
-```
-
--   Watch source changes and run tests repeatedly
-
-```shell
-$ gulp tdd
 ```
 
 -   Package and generate minified bundles to dist directory

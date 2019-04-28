@@ -1,5 +1,5 @@
 import geojson2svg from 'geojson2svg'
-import flattenDepth from 'lodash/flattenDepth'
+import flattenDepth from 'lodash.flattendepth'
 
 const options = {
     useGeoExtent: true
@@ -99,16 +99,9 @@ export class Geo2img extends maptalks.Class {
     }
 
     _getMapExtent() {
-        const extent = this.options['useGeoExtent']
-            ? this.geometry.getExtent()
-            : this.map.getExtent()
+        const extent = this.options['useGeoExtent'] ? this.geometry.getExtent() : this.map.getExtent()
         const { xmin, xmax, ymin, ymax } = extent
-        return {
-            left: xmin,
-            right: xmax,
-            bottom: ymin,
-            top: ymax
-        }
+        return { left: xmin, right: xmax, bottom: ymin, top: ymax }
     }
 }
 

@@ -16,8 +16,8 @@ export class Geo2img extends maptalks.Class {
     }
 
     convert(geometry, map) {
-        if (map) this.setMap(map)
         this._savePrivateGeometry(geometry)
+        if (map) this.setMap(map)
         let svg = this._geo2svg()
         svg = `data:image/svg+xml,${svg}`
         return svg
@@ -35,19 +35,15 @@ export class Geo2img extends maptalks.Class {
     }
 
     _geo2svg() {
-        const viewportSize = this._getViewportSize()
-        const { width, height } = viewportSize
-        const style = this._getStyle()
         const mapExtent = this._getMapExtent()
+        const style = this._getStyle()
+        const viewportSize = this._getViewportSize(style)
+        const { width, height } = viewportSize
 
-        const option = {
-            viewportSize,
-            attributes: { style, 'vector-effect': 'non-scaling-stroke' },
-            mapExtent
-        }
+        const option = { viewportSize, attributes: { style, 'vector-effect': 'non-scaling-stroke' }, mapExtent }
         const converter = geojson2svg(option)
 
-        let svgText = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" x="0" y="0" style="transform: translateY(8%) scaleY(1.18);">`
+        let svgText = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" x="0" y="0">`
         const svgStrings = converter.convert(this.geometry.toGeoJSON())
         svgText += `${svgStrings}</svg>`
         svgText = svgText.replace(/#/g, '%23')
@@ -55,7 +51,7 @@ export class Geo2img extends maptalks.Class {
         return svgText
     }
 
-    _getViewportSize() {
+    _getViewportSize(style) {
         const type = this.geometry.getType()
         const { coordinates } = this.geometry.toGeoJSON().geometry
         let depth = type.startsWith('Multi') ? 2 : 1
@@ -76,14 +72,15 @@ export class Geo2img extends maptalks.Class {
                 ymax = Math.max(y, ymax)
             }
         })
-        const safe = 2
+        const strokeWidth = style.replace(/.*stroke-width:/, '').replace(/;.*/, '')
+        const safe = parseInt(strokeWidth, 0) + 1
         const width = parseInt(xmax, 0) - parseInt(xmin, 0) + safe
         const height = parseInt(ymax, 0) - parseInt(ymin, 0) + safe
         return { width, height }
     }
 
     _getStyle() {
-        let style = 'transform:translate(1%,1%) scale(0.98);'
+        let style = 'transform:translateX(1px) translateY(1px) scaleX(.99) scaleY(1.15);'
         const symbol = this.geometry.getSymbol()
         if (!symbol) return style
         const { lineColor, lineWidth, lineDasharray, polygonFill, polygonOpacity } = symbol
@@ -99,7 +96,11 @@ export class Geo2img extends maptalks.Class {
     }
 
     _getMapExtent() {
-        const extent = this.options['useGeoExtent'] ? this.geometry.getExtent() : this.map.getExtent()
+        let extent = this.map.getExtent()
+        if (this.options['useGeoExtent']) {
+            const geoExtent = this.geometry.getExtent()
+            if (geoExtent) extent = geoExtent
+        }
         const { xmin, xmax, ymin, ymax } = extent
         return { left: xmin, right: xmax, bottom: ymin, top: ymax }
     }

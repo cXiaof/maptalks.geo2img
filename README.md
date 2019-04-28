@@ -42,6 +42,10 @@ new maptalks.Geo2img(options)
 `setMap(map)` if you geometry has not add to layer, you need set map for plugin(or push map to the second attr of **convert** ).
 `remove()`
 
+## BUG Already
+
+-   svg-path often exceed boundary of SVG-tag
+
 ## Contributing
 
 We welcome any kind of contributions including issue reportings, pull requests, documentation corrections, feature requests and any other helps.

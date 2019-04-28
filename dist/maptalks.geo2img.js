@@ -1,7 +1,7 @@
 /*!
- * maptalks.geo2img v0.1.0-beta.1
+ * maptalks.geo2img v0.1.0-beta.2
  * LICENSE : MIT
- * (c) 2016-2018 maptalks.org
+ * (c) 2016-2019 maptalks.org
  */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -319,6 +319,53 @@ var geojson2svg = function geojson2svg(options) {
 
 var main = geojson2svg;
 
+var _typeof$1 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0;
+var MAX_SAFE_INTEGER = 9007199254740991;
+var MAX_INTEGER = 1.7976931348623157e+308;
+var NAN = 0 / 0;
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]';
+var funcTag = '[object Function]';
+var genTag = '[object GeneratorFunction]';
+var symbolTag = '[object Symbol]';
+
+/** Used to match leading and trailing whitespace. */
+var reTrim = /^\s+|\s+$/g;
+
+/** Used to detect bad signed hexadecimal string values. */
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+/** Used to detect binary string values. */
+var reIsBinary = /^0b[01]+$/i;
+
+/** Used to detect octal string values. */
+var reIsOctal = /^0o[0-7]+$/i;
+
+/** Built-in method references without a dependency on `root`. */
+var freeParseInt = parseInt;
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = _typeof$1(commonjsGlobal) == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+
+/** Detect free variable `self`. */
+var freeSelf = (typeof self === 'undefined' ? 'undefined' : _typeof$1(self)) == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
 /**
  * Appends the elements of `values` to `array`.
  *
@@ -338,177 +385,97 @@ function arrayPush(array, values) {
   return array;
 }
 
-var _arrayPush = arrayPush;
-
-var _typeof$2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/** Detect free variable `global` from Node.js. */
-var freeGlobal = _typeof$2(commonjsGlobal) == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
-
-var _freeGlobal = freeGlobal;
-
-var _typeof$1 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/** Detect free variable `self`. */
-var freeSelf = (typeof self === 'undefined' ? 'undefined' : _typeof$1(self)) == 'object' && self && self.Object === Object && self;
-
-/** Used as a reference to the global object. */
-var root = _freeGlobal || freeSelf || Function('return this')();
-
-var _root = root;
-
-/** Built-in value references. */
-var _Symbol2 = _root.Symbol;
-
-var _Symbol = _Symbol2;
-
-/** Used for built-in method references. */
-var objectProto$1 = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty$1 = objectProto$1.hasOwnProperty;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var nativeObjectToString = objectProto$1.toString;
-
-/** Built-in value references. */
-var symToStringTag$1 = _Symbol ? _Symbol.toStringTag : undefined;
-
-/**
- * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the raw `toStringTag`.
- */
-function getRawTag(value) {
-  var isOwn = hasOwnProperty$1.call(value, symToStringTag$1),
-      tag = value[symToStringTag$1];
-
-  try {
-    value[symToStringTag$1] = undefined;
-    var unmasked = true;
-  } catch (e) {}
-
-  var result = nativeObjectToString.call(value);
-  if (unmasked) {
-    if (isOwn) {
-      value[symToStringTag$1] = tag;
-    } else {
-      delete value[symToStringTag$1];
-    }
-  }
-  return result;
-}
-
-var _getRawTag = getRawTag;
-
-/** Used for built-in method references. */
-var objectProto$2 = Object.prototype;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var nativeObjectToString$1 = objectProto$2.toString;
-
-/**
- * Converts `value` to a string using `Object.prototype.toString`.
- *
- * @private
- * @param {*} value The value to convert.
- * @returns {string} Returns the converted string.
- */
-function objectToString(value) {
-  return nativeObjectToString$1.call(value);
-}
-
-var _objectToString = objectToString;
-
-/** `Object#toString` result references. */
-var nullTag = '[object Null]';
-var undefinedTag = '[object Undefined]';
-
-/** Built-in value references. */
-var symToStringTag = _Symbol ? _Symbol.toStringTag : undefined;
-
-/**
- * The base implementation of `getTag` without fallbacks for buggy environments.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the `toStringTag`.
- */
-function baseGetTag(value) {
-  if (value == null) {
-    return value === undefined ? undefinedTag : nullTag;
-  }
-  return symToStringTag && symToStringTag in Object(value) ? _getRawTag(value) : _objectToString(value);
-}
-
-var _baseGetTag = baseGetTag;
-
-var _typeof$3 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return value != null && (typeof value === 'undefined' ? 'undefined' : _typeof$3(value)) == 'object';
-}
-
-var isObjectLike_1 = isObjectLike;
-
-/** `Object#toString` result references. */
-var argsTag = '[object Arguments]';
-
-/**
- * The base implementation of `_.isArguments`.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an `arguments` object,
- */
-function baseIsArguments(value) {
-  return isObjectLike_1(value) && _baseGetTag(value) == argsTag;
-}
-
-var _baseIsArguments = baseIsArguments;
-
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
 
 /** Used to check objects for own properties. */
 var hasOwnProperty = objectProto.hasOwnProperty;
 
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
 /** Built-in value references. */
+var _Symbol = root.Symbol;
 var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+var spreadableSymbol = _Symbol ? _Symbol.isConcatSpreadable : undefined;
+
+/**
+ * The base implementation of `_.flatten` with support for restricting flattening.
+ *
+ * @private
+ * @param {Array} array The array to flatten.
+ * @param {number} depth The maximum recursion depth.
+ * @param {boolean} [predicate=isFlattenable] The function invoked per iteration.
+ * @param {boolean} [isStrict] Restrict to values that pass `predicate` checks.
+ * @param {Array} [result=[]] The initial result value.
+ * @returns {Array} Returns the new flattened array.
+ */
+function baseFlatten(array, depth, predicate, isStrict, result) {
+  var index = -1,
+      length = array.length;
+
+  predicate || (predicate = isFlattenable);
+  result || (result = []);
+
+  while (++index < length) {
+    var value = array[index];
+    if (depth > 0 && predicate(value)) {
+      if (depth > 1) {
+        // Recursively flatten arrays (susceptible to call stack limits).
+        baseFlatten(value, depth - 1, predicate, isStrict, result);
+      } else {
+        arrayPush(result, value);
+      }
+    } else if (!isStrict) {
+      result[result.length] = value;
+    }
+  }
+  return result;
+}
+
+/**
+ * Checks if `value` is a flattenable `arguments` object or array.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is flattenable, else `false`.
+ */
+function isFlattenable(value) {
+  return isArray(value) || isArguments(value) || !!(spreadableSymbol && value && value[spreadableSymbol]);
+}
+
+/**
+ * Recursively flatten `array` up to `depth` times.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.4.0
+ * @category Array
+ * @param {Array} array The array to flatten.
+ * @param {number} [depth=1] The maximum recursion depth.
+ * @returns {Array} Returns the new flattened array.
+ * @example
+ *
+ * var array = [1, [2, [3, [4]], 5]];
+ *
+ * _.flattenDepth(array, 1);
+ * // => [1, 2, [3, [4]], 5]
+ *
+ * _.flattenDepth(array, 2);
+ * // => [1, 2, 3, [4], 5]
+ */
+function flattenDepth(array, depth) {
+  var length = array ? array.length : 0;
+  if (!length) {
+    return [];
+  }
+  depth = depth === undefined ? 1 : toInteger(depth);
+  return baseFlatten(array, depth);
+}
 
 /**
  * Checks if `value` is likely an `arguments` object.
@@ -528,13 +495,10 @@ var propertyIsEnumerable = objectProto.propertyIsEnumerable;
  * _.isArguments([1, 2, 3]);
  * // => false
  */
-var isArguments = _baseIsArguments(function () {
-  return arguments;
-}()) ? _baseIsArguments : function (value) {
-  return isObjectLike_1(value) && hasOwnProperty.call(value, 'callee') && !propertyIsEnumerable.call(value, 'callee');
-};
-
-var isArguments_1 = isArguments;
+function isArguments(value) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') && (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+}
 
 /**
  * Checks if `value` is classified as an `Array` object.
@@ -561,61 +525,117 @@ var isArguments_1 = isArguments;
  */
 var isArray = Array.isArray;
 
-var isArray_1 = isArray;
-
-/** Built-in value references. */
-var spreadableSymbol = _Symbol ? _Symbol.isConcatSpreadable : undefined;
-
 /**
- * Checks if `value` is a flattenable `arguments` object or array.
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
  *
- * @private
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is flattenable, else `false`.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
  */
-function isFlattenable(value) {
-  return isArray_1(value) || isArguments_1(value) || !!(spreadableSymbol && value && value[spreadableSymbol]);
+function isArrayLike(value) {
+  return value != null && isLength(value.length) && !isFunction(value);
 }
-
-var _isFlattenable = isFlattenable;
 
 /**
- * The base implementation of `_.flatten` with support for restricting flattening.
+ * This method is like `_.isArrayLike` except that it also checks if `value`
+ * is an object.
  *
- * @private
- * @param {Array} array The array to flatten.
- * @param {number} depth The maximum recursion depth.
- * @param {boolean} [predicate=isFlattenable] The function invoked per iteration.
- * @param {boolean} [isStrict] Restrict to values that pass `predicate` checks.
- * @param {Array} [result=[]] The initial result value.
- * @returns {Array} Returns the new flattened array.
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array-like object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArrayLikeObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLikeObject(document.body.children);
+ * // => true
+ *
+ * _.isArrayLikeObject('abc');
+ * // => false
+ *
+ * _.isArrayLikeObject(_.noop);
+ * // => false
  */
-function baseFlatten(array, depth, predicate, isStrict, result) {
-  var index = -1,
-      length = array.length;
-
-  predicate || (predicate = _isFlattenable);
-  result || (result = []);
-
-  while (++index < length) {
-    var value = array[index];
-    if (depth > 0 && predicate(value)) {
-      if (depth > 1) {
-        // Recursively flatten arrays (susceptible to call stack limits).
-        baseFlatten(value, depth - 1, predicate, isStrict, result);
-      } else {
-        _arrayPush(result, value);
-      }
-    } else if (!isStrict) {
-      result[result.length] = value;
-    }
-  }
-  return result;
+function isArrayLikeObject(value) {
+  return isObjectLike(value) && isArrayLike(value);
 }
 
-var _baseFlatten = baseFlatten;
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
 
-var _typeof$4 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
 
 /**
  * Checks if `value` is the
@@ -643,16 +663,37 @@ var _typeof$4 = typeof Symbol === "function" && typeof Symbol.iterator === "symb
  * // => false
  */
 function isObject(value) {
-  var type = typeof value === 'undefined' ? 'undefined' : _typeof$4(value);
-  return value != null && (type == 'object' || type == 'function');
+  var type = typeof value === 'undefined' ? 'undefined' : _typeof$1(value);
+  return !!value && (type == 'object' || type == 'function');
 }
 
-var isObject_1 = isObject;
-
-var _typeof$5 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-/** `Object#toString` result references. */
-var symbolTag = '[object Symbol]';
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && (typeof value === 'undefined' ? 'undefined' : _typeof$1(value)) == 'object';
+}
 
 /**
  * Checks if `value` is classified as a `Symbol` primitive or object.
@@ -672,76 +713,8 @@ var symbolTag = '[object Symbol]';
  * // => false
  */
 function isSymbol(value) {
-  return (typeof value === 'undefined' ? 'undefined' : _typeof$5(value)) == 'symbol' || isObjectLike_1(value) && _baseGetTag(value) == symbolTag;
+  return (typeof value === 'undefined' ? 'undefined' : _typeof$1(value)) == 'symbol' || isObjectLike(value) && objectToString.call(value) == symbolTag;
 }
-
-var isSymbol_1 = isSymbol;
-
-/** Used as references for various `Number` constants. */
-var NAN = 0 / 0;
-
-/** Used to match leading and trailing whitespace. */
-var reTrim = /^\s+|\s+$/g;
-
-/** Used to detect bad signed hexadecimal string values. */
-var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
-
-/** Used to detect binary string values. */
-var reIsBinary = /^0b[01]+$/i;
-
-/** Used to detect octal string values. */
-var reIsOctal = /^0o[0-7]+$/i;
-
-/** Built-in method references without a dependency on `root`. */
-var freeParseInt = parseInt;
-
-/**
- * Converts `value` to a number.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to process.
- * @returns {number} Returns the number.
- * @example
- *
- * _.toNumber(3.2);
- * // => 3.2
- *
- * _.toNumber(Number.MIN_VALUE);
- * // => 5e-324
- *
- * _.toNumber(Infinity);
- * // => Infinity
- *
- * _.toNumber('3.2');
- * // => 3.2
- */
-function toNumber(value) {
-  if (typeof value == 'number') {
-    return value;
-  }
-  if (isSymbol_1(value)) {
-    return NAN;
-  }
-  if (isObject_1(value)) {
-    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
-    value = isObject_1(other) ? other + '' : other;
-  }
-  if (typeof value != 'string') {
-    return value === 0 ? value : +value;
-  }
-  value = value.replace(reTrim, '');
-  var isBinary = reIsBinary.test(value);
-  return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
-}
-
-var toNumber_1 = toNumber;
-
-/** Used as references for various `Number` constants. */
-var INFINITY = 1 / 0;
-var MAX_INTEGER = 1.7976931348623157e+308;
 
 /**
  * Converts `value` to a finite number.
@@ -770,15 +743,13 @@ function toFinite(value) {
   if (!value) {
     return value === 0 ? value : 0;
   }
-  value = toNumber_1(value);
+  value = toNumber(value);
   if (value === INFINITY || value === -INFINITY) {
     var sign = value < 0 ? -1 : 1;
     return sign * MAX_INTEGER;
   }
   return value === value ? value : 0;
 }
-
-var toFinite_1 = toFinite;
 
 /**
  * Converts `value` to an integer.
@@ -807,44 +778,55 @@ var toFinite_1 = toFinite;
  * // => 3
  */
 function toInteger(value) {
-  var result = toFinite_1(value),
+  var result = toFinite(value),
       remainder = result % 1;
 
   return result === result ? remainder ? result - remainder : result : 0;
 }
 
-var toInteger_1 = toInteger;
-
 /**
- * Recursively flatten `array` up to `depth` times.
+ * Converts `value` to a number.
  *
  * @static
  * @memberOf _
- * @since 4.4.0
- * @category Array
- * @param {Array} array The array to flatten.
- * @param {number} [depth=1] The maximum recursion depth.
- * @returns {Array} Returns the new flattened array.
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {number} Returns the number.
  * @example
  *
- * var array = [1, [2, [3, [4]], 5]];
+ * _.toNumber(3.2);
+ * // => 3.2
  *
- * _.flattenDepth(array, 1);
- * // => [1, 2, [3, [4]], 5]
+ * _.toNumber(Number.MIN_VALUE);
+ * // => 5e-324
  *
- * _.flattenDepth(array, 2);
- * // => [1, 2, 3, [4], 5]
+ * _.toNumber(Infinity);
+ * // => Infinity
+ *
+ * _.toNumber('3.2');
+ * // => 3.2
  */
-function flattenDepth(array, depth) {
-  var length = array == null ? 0 : array.length;
-  if (!length) {
-    return [];
+function toNumber(value) {
+  if (typeof value == 'number') {
+    return value;
   }
-  depth = depth === undefined ? 1 : toInteger_1(depth);
-  return _baseFlatten(array, depth);
+  if (isSymbol(value)) {
+    return NAN;
+  }
+  if (isObject(value)) {
+    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+    value = isObject(other) ? other + '' : other;
+  }
+  if (typeof value != 'string') {
+    return value === 0 ? value : +value;
+  }
+  value = value.replace(reTrim, '');
+  var isBinary = reIsBinary.test(value);
+  return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
 }
 
-var flattenDepth_1 = flattenDepth;
+var lodash_flattendepth = flattenDepth;
 
 function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
 
@@ -873,8 +855,8 @@ var Geo2img = function (_maptalks$Class) {
     };
 
     Geo2img.prototype.convert = function convert(geometry, map) {
-        if (map) this.setMap(map);
         this._savePrivateGeometry(geometry);
+        if (map) this.setMap(map);
         var svg = this._geo2svg();
         svg = 'data:image/svg+xml,' + svg;
         return svg;
@@ -892,21 +874,17 @@ var Geo2img = function (_maptalks$Class) {
     };
 
     Geo2img.prototype._geo2svg = function _geo2svg() {
-        var viewportSize = this._getViewportSize();
+        var mapExtent = this._getMapExtent();
+        var style = this._getStyle();
+        var viewportSize = this._getViewportSize(style);
         var width = viewportSize.width,
             height = viewportSize.height;
 
-        var style = this._getStyle();
-        var mapExtent = this._getMapExtent();
 
-        var option = {
-            viewportSize: viewportSize,
-            attributes: { style: style, 'vector-effect': 'non-scaling-stroke' },
-            mapExtent: mapExtent
-        };
+        var option = { viewportSize: viewportSize, attributes: { style: style, 'vector-effect': 'non-scaling-stroke' }, mapExtent: mapExtent };
         var converter = main(option);
 
-        var svgText = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '" x="0" y="0" style="transform: translateY(8%) scaleY(1.18);">';
+        var svgText = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '" x="0" y="0">';
         var svgStrings = converter.convert(this.geometry.toGeoJSON());
         svgText += svgStrings + '</svg>';
         svgText = svgText.replace(/#/g, '%23');
@@ -914,7 +892,7 @@ var Geo2img = function (_maptalks$Class) {
         return svgText;
     };
 
-    Geo2img.prototype._getViewportSize = function _getViewportSize() {
+    Geo2img.prototype._getViewportSize = function _getViewportSize(style) {
         var _this2 = this;
 
         var type = this.geometry.getType();
@@ -926,7 +904,7 @@ var Geo2img = function (_maptalks$Class) {
             xmax = void 0,
             ymin = void 0,
             ymax = void 0;
-        flattenDepth_1(coordinates, depth).forEach(function (coordArr, index) {
+        lodash_flattendepth(coordinates, depth).forEach(function (coordArr, index) {
             var coordObj = new maptalks.Coordinate(coordArr);
 
             var _map$coordinateToCont = _this2.map.coordinateToContainerPoint(coordObj),
@@ -945,14 +923,15 @@ var Geo2img = function (_maptalks$Class) {
                 ymax = Math.max(y, ymax);
             }
         });
-        var safe = 2;
+        var strokeWidth = style.replace(/.*stroke-width:/, '').replace(/;.*/, '');
+        var safe = parseInt(strokeWidth, 0) + 1;
         var width = parseInt(xmax, 0) - parseInt(xmin, 0) + safe;
         var height = parseInt(ymax, 0) - parseInt(ymin, 0) + safe;
         return { width: width, height: height };
     };
 
     Geo2img.prototype._getStyle = function _getStyle() {
-        var style = 'transform:translate(1%,1%) scale(0.98);';
+        var style = 'transform:translateX(1px) translateY(1px) scaleX(.99) scaleY(1.15);';
         var symbol = this.geometry.getSymbol();
         if (!symbol) return style;
         var lineColor = symbol.lineColor,
@@ -973,18 +952,18 @@ var Geo2img = function (_maptalks$Class) {
     };
 
     Geo2img.prototype._getMapExtent = function _getMapExtent() {
-        var extent = this.options['useGeoExtent'] ? this.geometry.getExtent() : this.map.getExtent();
-        var xmin = extent.xmin,
-            xmax = extent.xmax,
-            ymin = extent.ymin,
-            ymax = extent.ymax;
+        var extent = this.map.getExtent();
+        if (this.options['useGeoExtent']) {
+            var geoExtent = this.geometry.getExtent();
+            if (geoExtent) extent = geoExtent;
+        }
+        var _extent = extent,
+            xmin = _extent.xmin,
+            xmax = _extent.xmax,
+            ymin = _extent.ymin,
+            ymax = _extent.ymax;
 
-        return {
-            left: xmin,
-            right: xmax,
-            bottom: ymin,
-            top: ymax
-        };
+        return { left: xmin, right: xmax, bottom: ymin, top: ymax };
     };
 
     return Geo2img;
@@ -996,6 +975,6 @@ exports.Geo2img = Geo2img;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-typeof console !== 'undefined' && console.log('maptalks.geo2img v0.1.0-beta.1');
+typeof console !== 'undefined' && console.log('maptalks.geo2img v0.1.0-beta.2');
 
 })));

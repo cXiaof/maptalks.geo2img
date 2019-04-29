@@ -40,7 +40,11 @@ export class Geo2img extends maptalks.Class {
         const viewportSize = this._getViewportSize(style)
         const { width, height } = viewportSize
 
-        const option = { viewportSize, attributes: { style, 'vector-effect': 'non-scaling-stroke' }, mapExtent }
+        const option = {
+            viewportSize,
+            attributes: { style, 'vector-effect': 'non-scaling-stroke' },
+            mapExtent
+        }
         const converter = geojson2svg(option)
 
         let svgText = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" x="0" y="0">`
@@ -72,7 +76,9 @@ export class Geo2img extends maptalks.Class {
                 ymax = Math.max(y, ymax)
             }
         })
-        const strokeWidth = style.replace(/.*stroke-width:/, '').replace(/;.*/, '')
+        const strokeWidth = style
+            .replace(/.*stroke-width:/, '')
+            .replace(/;.*/, '')
         const safe = parseInt(strokeWidth, 0) + 1
         const width = parseInt(xmax, 0) - parseInt(xmin, 0) + safe
         const height = parseInt(ymax, 0) - parseInt(ymin, 0) + safe
@@ -80,16 +86,26 @@ export class Geo2img extends maptalks.Class {
     }
 
     _getStyle() {
-        let style = 'transform:translateX(1px) translateY(1px) scaleX(.99) scaleY(1.15);'
+        let style =
+            'transform:translateX(1px) translateY(1px) scaleX(.99) scaleY(1.15);'
         const symbol = this.geometry.getSymbol()
         if (!symbol) return style
-        const { lineColor, lineWidth, lineDasharray, polygonFill, polygonOpacity } = symbol
+        const {
+            lineColor,
+            lineWidth,
+            lineDasharray,
+            polygonFill,
+            polygonOpacity
+        } = symbol
 
         const stroke = lineColor ? lineColor : 'black'
         const strokeWidth = lineWidth ? `${lineWidth}px` : '2px'
-        const strokeDasharray = lineDasharray ? lineDasharray.toString() : 'none'
+        const strokeDasharray = lineDasharray
+            ? lineDasharray.toString()
+            : 'none'
         const fill = polygonFill ? polygonFill : 'transparent'
-        const fillOpacity = polygonOpacity === 0 ? 0 : polygonOpacity ? polygonOpacity : 1
+        const fillOpacity =
+            polygonOpacity === 0 ? 0 : polygonOpacity ? polygonOpacity : 1
 
         style += `stroke:${stroke};fill:${fill};stroke-dasharray:${strokeDasharray};fill-opacity:${fillOpacity};stroke-width:${strokeWidth};`
         return style

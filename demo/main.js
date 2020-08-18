@@ -9,17 +9,17 @@ const map = new maptalks.Map('map', {
         attribution:
             '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
         maxAvailableZoom: 18,
-        placeholder: true
+        placeholder: true,
     }),
     scaleControl: { position: 'bottom-right', metric: true, imperial: true },
     zoomControl: {
         position: { top: 80, right: 20 },
         slider: false,
-        zoomLevel: true
+        zoomLevel: true,
     },
     spatialReference: {
         projection: 'EPSG:3857',
-        resolutions: (function() {
+        resolutions: (function () {
             const resolutions = []
             const d = 2 * 6378137 * Math.PI
             for (let i = 0; i < 22; i++) {
@@ -31,36 +31,25 @@ const map = new maptalks.Map('map', {
             top: 6378137 * Math.PI,
             bottom: -6378137 * Math.PI,
             left: -6378137 * Math.PI,
-            right: 6378137 * Math.PI
-        }
-    }
+            right: 6378137 * Math.PI,
+        },
+    },
 })
 new maptalks.CompassControl({
-    position: 'top-right'
+    position: 'top-right',
 }).addTo(map)
 
 const g2 = new maptalks.Geo2img().setMap(map)
 const layer = new maptalks.VectorLayer('sketchPad').addTo(map)
 
 const convertGeoToIMG = (geometry) => {
-    const id = '_demo'
-    let imgDOM = document.getElementById(id)
-    if (imgDOM) imgDOM.remove()
-    const base64 = g2.convert(geometry)
-    imgDOM = document.createElement('img')
-    imgDOM.setAttribute('id', id)
-    imgDOM.setAttribute('src', base64)
-    imgDOM.setAttribute(
-        'style',
-        'position: absolute; top: 0; bottom: 0; margin: auto;'
-    )
-    document.body.append(imgDOM)
+    const svgDom = document.getElementById('svg')
+    g2.convert(geometry, svgDom)
 }
 
 // new DrawTool
 const drawTool = new maptalks.DrawTool({ mode: 'Polygon' }).addTo(map).disable()
-drawTool.on('drawend', (param) => {
-    const { geometry } = param
+drawTool.on('drawend', ({ geometry }) => {
     geometry.addTo(layer)
     drawTool.disable()
     convertGeoToIMG(geometry)
@@ -80,16 +69,13 @@ const toolbar = new maptalks.control.Toolbar({
         {
             item: 'Convert As Multi',
             click: () => {
-                const geos = layer.getGeometries().reduce((target, geo) => {
-                    if (geo.getType() === 'Polygon') return [...target, geo]
-                    return target
-                }, [])
+                const geos = layer.getGeometries()
                 const multiGeo = new maptalks.MultiPolygon(geos)
                 convertGeoToIMG(multiGeo)
-            }
+            },
         },
-        { item: 'Clear', click: () => layer.clear() }
-    ]
+        { item: 'Clear', click: () => layer.clear() },
+    ],
 }).addTo(map)
 
 // new tip Panel
@@ -107,6 +93,6 @@ const textPanel = new maptalks.control.Panel({
         画完的同时将会出现一个img标签。<br />
         点击<b>Convert As Multi</b>查看multiGeometry的效果。
     `,
-    closeButton: true
+    closeButton: true,
 })
 map.addControl(textPanel)

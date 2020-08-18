@@ -6,12 +6,6 @@
 /*!
  * requires maptalks@>=0.31.0 
  */
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.maptalks = global.maptalks || {})));
-}(this, (function (exports) { 'use strict';
-
 // extend.js
 // extend b to a with shallow copy
 var extend = function extend(a, b) {
@@ -423,10 +417,6 @@ var Geo2img = function (_maptalks$Class) {
 
 Geo2img.mergeOptions(options);
 
-exports.Geo2img = Geo2img;
-
-Object.defineProperty(exports, '__esModule', { value: true });
+export { Geo2img };
 
 typeof console !== 'undefined' && console.log('maptalks.geo2img v0.2.0-beta.1, requires maptalks@>=0.31.0.');
-
-})));

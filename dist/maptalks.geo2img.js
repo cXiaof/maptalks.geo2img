@@ -1,7 +1,7 @@
 /*!
  * maptalks.geo2img v0.2.0-beta.1
  * LICENSE : MIT
- * (c) 2016-2020 maptalks.org
+ * (c) 2016-2021 maptalks.org
  */
 /*!
  * requires maptalks@>=0.31.0 

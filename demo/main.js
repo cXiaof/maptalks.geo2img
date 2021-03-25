@@ -85,12 +85,11 @@ const textPanel = new maptalks.control.Panel({
     custom: false,
     content: `
         Click a type in <b>Draw Once</b> to draw one geometry,<br />
-        and a html img tag show now.<br />
-        Click <b>Convert As Multi</b> to show the effect<br />
-        with multiGeometry.<br />
+        and the result will be placed in the svg tag you provide.<br />
+        Click <b>Convert As Multi</b> to show the effect with multiGeometry.<br />
         <br />
         点击<b>Draw</b>里的类型然后画一个相应的图形，<br />
-        画完的同时将会出现一个img标签。<br />
+        渲染的结果会直接替换到你提供的svg标签处。<br />
         点击<b>Convert As Multi</b>查看multiGeometry的效果。
     `,
     closeButton: true,
